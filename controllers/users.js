@@ -29,6 +29,7 @@ module.exports = {
       attributes: ["email", "userName", "createdAt"]
     })
       .then(data => {
+        console.log(data);
         if (data) {
           const info = {
             email: data.email,
@@ -47,6 +48,7 @@ module.exports = {
 
   // 로그인
   signIn: (req, res) => {
+    console.log("로그인정보", req.body);
     User.findOne({
       where: {
         email: req.body.email,
@@ -57,7 +59,6 @@ module.exports = {
       }
     })
       .then(result => {
-        console.log("로그인요청");
         if (result) {
           const token = jwt.sign(
             {
@@ -66,7 +67,7 @@ module.exports = {
             },
             secretObj.secret,
             {
-              expiresIn: "30m"
+              expiresIn: "300m"
             }
           );
           res.cookie("user", token); // {secure: true, httpOnly: true }

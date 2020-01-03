@@ -3,8 +3,9 @@ const cors = require("cors");
 const session = require("express-session");
 var sequelize = require("./models/index").sequelize;
 
-/* const userRouter = require("./routes/user");
-const ingRouter = require("./routes/ingredient");
+const userRouter = require("./routes/user");
+const boardRouter = require("./routes/board");
+/* const ingRouter = require("./routes/ingredient");
 const menuRouter = require("./routes/menu"); */
 const cookieParser = require("cookie-parser");
 
@@ -25,7 +26,8 @@ app.use(
   })
 );
 // 재고 목록 라우트
-//app.use("/users", userRouter);
+app.use("/users", userRouter);
+app.use("/boards", boardRouter);
 
 app.set("port", port);
 app.listen(app.get("port"));

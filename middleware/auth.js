@@ -3,7 +3,7 @@ const secretObj = require("../config/jwt");
 
 const authCheck = (req, res, next) => {
   const token = req.cookies.user;
-  console.log(token);
+  console.log(req);
   if (!token) {
     return res.status(403).json({
       success: false,
