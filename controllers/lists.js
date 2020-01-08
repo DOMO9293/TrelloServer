@@ -1,10 +1,10 @@
 const express = require("express");
-const { List } = require("../models");
+const { List, Todo } = require("../models");
 const auth = require("./../middleware/auth");
 
 module.exports = {
   // 유저별 보드 조회
-  userBoard: (req, res) => {
+  userLists: (req, res) => {
     auth(req, res, () => {
       List.findAll({
         where: { userId: req.decoded.userId },
@@ -20,7 +20,7 @@ module.exports = {
         });
     });
   },
-  addBoard: (req, res) => {
+  addList: (req, res) => {
     auth(req, res, () => {
       List.create({
         userId: req.body.userId,
@@ -34,7 +34,7 @@ module.exports = {
         });
     });
   },
-  deleteBoard: (req, res) => {
+  deleteList: (req, res) => {
     auth(req, res, () => {
       List.destroy({
         where: {

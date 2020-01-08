@@ -22,7 +22,13 @@ db.List.belongsTo(db.Board);
 db.User.hasMany(db.List);
 db.List.belongsTo(db.User);
 
+db.Board.hasMany(db.Todo);
+db.Todo.belongsTo(db.Board);
+
 db.List.hasMany(db.Todo);
 db.Todo.belongsTo(db.List);
+
+db.User.hasMany(db.Todo);
+db.Todo.belongsTo(db.User);
 
 module.exports = db;
