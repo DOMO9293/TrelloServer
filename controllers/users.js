@@ -60,6 +60,7 @@ module.exports = {
     })
       .then(result => {
         if (result) {
+          console.log("로그인요청", result.dataValues.id);
           const token = jwt.sign(
             {
               email: req.body.email,
@@ -67,12 +68,13 @@ module.exports = {
             },
             secretObj.secret,
             {
-              expiresIn: "300m"
+              expiresIn: "30000m"
             }
           );
           res.cookie("user", token); // {secure: true, httpOnly: true }
           res.json({
-            token: token
+            token: token,
+            userId: result.dataValues.id
           });
         } else {
           res.send("login failed");

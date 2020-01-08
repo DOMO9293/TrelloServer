@@ -8,94 +8,44 @@ module.exports = {
     auth(req, res, () => {
       Board.findAll({
         where: { userId: req.decoded.userId },
-        attributes: ["board_name"],
-        include: [Board]
+        attributes: ["board_name", "createdAt", "userId"]
       })
         .then(data => {
           console.log("보드", data);
-          const ingId = [];
-          for (let i = 0; i < data.length; i++) {
-            ingId.push(data[i].ingredient.id);
-          }
-          return ingId;
-        })
-        .then(ingId => {
-          const dataArr = [];
-          for (let i = 0; i < ingId.length; i++) {
-            dataArr.push(
-              Menu.findAll({
-                where: { ingredientId: ingId[i] }
-              })
-            );
-          }
-          return dataArr;
+
+          return data;
         })
         .then(data => {
-          const menuArr = [];
-          Promise.all(data)
-            .then(data => {
-              for (let i = 0; i < data.length; i++) {
-                if (data[i].length !== 0) {
-                  for (let j = 0; j < data[i].length; j++) {
-                    const menuData = {};
-                    menuData.menu_name = data[i][j].dataValues.menu_name;
-                    menuData.menu_ing = data[i][j].dataValues.menu_ing;
-                    menuArr.push(menuData);
-                  }
-                }
-              }
-              return menuArr;
-            })
-            .then(data => {
-              res.status(200).json(data);
-            });
+          res.status(200).json(data);
         });
     });
   },
-  userBoards: (req, res) => {
+  addBoard: (req, res) => {
     auth(req, res, () => {
-      Board.findAll({
-        where: { userId: req.decoded.userId },
-        attributes: ["board_name"]
+      Board.create({
+        userId: req.body.userId,
+        board_name: req.body.board_name
       })
-        .then(data => {
-          console.log("보드", data);
-          const ingId = [];
-          for (let i = 0; i < data.length; i++) {
-            ingId.push(data[i].ingredient.id);
-          }
-          return ingId;
+        .then(result => {
+          res.status(201).json(result);
         })
-        .then(ingId => {
-          const dataArr = [];
-          for (let i = 0; i < ingId.length; i++) {
-            dataArr.push(
-              Menu.findAll({
-                where: { ingredientId: ingId[i] }
-              })
-            );
-          }
-          return dataArr;
+        .catch(err => {
+          res.status(500).send(err);
+        });
+    });
+  },
+  deleteBoard: (req, res) => {
+    auth(req, res, () => {
+      Board.destroy({
+        where: {
+          board_name: req.body.board_name
+        }
+      })
+        .then(result => {
+          res.status(201).json(result);
         })
-        .then(data => {
-          const menuArr = [];
-          Promise.all(data)
-            .then(data => {
-              for (let i = 0; i < data.length; i++) {
-                if (data[i].length !== 0) {
-                  for (let j = 0; j < data[i].length; j++) {
-                    const menuData = {};
-                    menuData.menu_name = data[i][j].dataValues.menu_name;
-                    menuData.menu_ing = data[i][j].dataValues.menu_ing;
-                    menuArr.push(menuData);
-                  }
-                }
-              }
-              return menuArr;
-            })
-            .then(data => {
-              res.status(200).json(data);
-            });
+        .catch(err => {
+          res.status(500).send(err);
         });
     });
   }

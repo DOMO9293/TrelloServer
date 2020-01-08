@@ -28,7 +28,7 @@ const authCheck = (req, res, next) => {
   p.then(decoded => {
     req.decoded = decoded;
     next();
-  }).catch(e);
+  }).catch(e); //__
 };
 
 module.exports = authCheck;

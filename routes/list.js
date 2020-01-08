@@ -1,24 +1,23 @@
 const express = require("express");
 const router = express.Router();
 
-const ingControl = require("./../controller/ingredients");
+const listControl = require("./../controllers/lists");
 
-// 회원별 재고 목록 조회
-router.get("/", ingControl.userIng);
+// 회원별 리스트 목록 조회
+router.get("/", listControl.userLists);
 
-// 전체 재고 목록 조회
-router.get("/all", ingControl.userIngAll);
+//회원별 리스트 추가
+router.post("/addItem", listControl.addList);
 
-// 재고 검색 자동완성
-router.get("/:keyword", ingControl.search);
+//회원별 리스트 삭제
+router.post("/delete", listControl.deleteList);
 
-// 회원별 재고 추가
-router.post("/addItem", ingControl.addItem);
+//회원별 할일 추가
+router.post("/:listId/addItem", listControl.addTodo);
 
-// 회원별 재고량 수정
-router.post("/quantity", ingControl.modifyQuantity);
+//회원별 할일 체크/체크해제
 
-// 회원별 재고량 삭제
-router.post("/delete", ingControl.deleteItem);
+//회원별 할일 삭제
+router.post("/:listId/delete", listControl.deleteTodo);
 
 module.exports = router;
